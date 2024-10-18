@@ -1,0 +1,565 @@
+{% extends 'base.html' %} {% block head %} {% endblock %} {% block body %}
+<!-- top-area Start -->
+
+<!-- /.top-area-->
+<!-- top-area End -->
+
+<!--welcome-hero start -->
+<section id="home" class="welcome-hero">
+  <div class="container">
+    <div class="welcome-hero-txt">
+      <h2>Stay Ahead of Traffic in Bogor</h2>
+      <p>
+        Monitor real-time traffic conditions, avoid congested roads, and plan your journey with ease. <br />
+        Your go-to source for smarter travel in Bogor.
+      </p>
+    </div>
+
+    <div class="welcome-hero-serch-box">
+      <div class="welcome-hero-form">
+        <div class="single-welcome-hero-form">
+          <div class="welcome-hero-form-icon">
+            <i class="flaticon-gps-fixed-indicator"></i>
+          </div>
+          <h3>Roads?</h3>
+          <form id="search-form">
+            <input id="search-input" type="text" placeholder="Ex: baranangsiang, tugu kujang, lawanggintung" />
+          </form>
+        </div>
+        <!-- Daftar autocomplete akan ditambahkan di sini -->
+        <div id="autocomplete-list" class="autocomplete-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/.welcome-hero-->
+<!--welcome-hero end -->
+
+<!--works start -->
+<section id="works" class="works">
+  <div class="container">
+    <div class="section-header">
+      <h2>how it works</h2>
+      <p>Learn More about how our website works</p>
+    </div>
+    <!--/.section-header-->
+    <div class="works-content">
+      <div class="row">
+        <div class="col-md-4 col-sm-6">
+          <div class="single-how-works" style="height: 480px">
+            <div class="single-how-works-icon">
+              <i class="flaticon-location-on-road"></i>
+            </div>
+            <h2><a href="#">Real-Time CCTV Footage</a></h2>
+            <p>
+              Our website integrates live CCTV feeds from various key points across Bogor's streets. This allows users to view real-time road conditions and monitor traffic flow. You can access multiple camera views, ensuring a clear
+              understanding of the traffic situation before heading out.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="single-how-works" style="height: 480px">
+            <div class="single-how-works-icon">
+              <i class="flaticon-networking"></i>
+            </div>
+            <h2><a href="#">Traffic Density Status</a></h2>
+            <p>
+              Each road segment is analyzed and color-coded based on the current traffic density, giving you a quick glance at whether the streets are clear, moderately busy, or congested. This data is updated in real-time to help you make
+              informed decisions about your travel route.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="single-how-works" style="height: 480px">
+            <div class="single-how-works-icon d-flex bg-success" style="margin: auto">
+              <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <h2><a href="#">Traffic Density Graphs</a></h2>
+            <p>Visualize traffic trends over time with our interactive traffic density graphs. These graphs display historical data and current traffic fluctuations, allowing users to predict peak hours and plan their trips efficiently.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/.container-->
+</section>
+<!--/.works-->
+<!--works end -->
+
+<!--explore start -->
+<section id="explore" class="explore">
+  <div class="container">
+    <div class="section-header">
+      <h2>Live Traffic on Bogor's Roads</h2>
+      <p>Click on any road to view live CCTV footage and traffic density charts. Monitor real-time conditions and plan your route with ease</p>
+    </div>
+    <!--/.section-header-->
+    <div class="explore-content">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-md-6 col-sm-6">
+          <a href="{{ url_for('tugu_kujang') }}">
+            <div class="single-explore-item">
+              <div class="single-explore-img">
+                <img src="{{ url_for('static', filename='images/explore/e1.jpeg') }}" alt="explore image" />
+              </div>
+              <div class="single-explore-txt bg-theme-2">
+                <h2><a href="#">Jalan Tugu Kujang</a></h2>
+                <a href="#" class="area">Area Pajajaran</a>
+                <p class="explore-rating-price">
+                  <span class="status-traffic">Arus Lancar</span>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="col-md-6 col-sm-6">
+          <a href="{{ url_for('lawanggintung') }}">
+            <div class="single-explore-item">
+              <div class="single-explore-img">
+                <img src="{{ url_for('static', filename='images/explore/e3.jpg') }}" alt="explore image" />
+              </div>
+              <div class="single-explore-txt bg-theme-2">
+                <h2><a href="#">Jalan Lawanggintung</a></h2>
+                <a href="#" class="area">Area Suryakencana</a>
+                <p class="explore-rating-price">
+                  <span class="status-traffic">Arus Lancar</span>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="col-md-6 col-sm-6">
+          <a href="{{ url_for('depan_mall_btm') }}">
+            <div class="single-explore-item">
+              <div class="single-explore-img">
+                <img src="{{ url_for('static', filename='images/explore/e4.jpg') }}" alt="explore image" />
+              </div>
+              <div class="single-explore-txt bg-theme-2">
+                <h2><a href="#">Jl. Ir. H. Juanda (Depan Mall BTM)</a></h2>
+                <a href="#" class="area">Area Trase 3</a>
+                <p class="explore-rating-price">
+                  <span class="status-traffic">Arus Lancar</span>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="col-md-6 col-sm-6">
+          <a href="{{ url_for('kapten_muslihat_view') }}">
+            <div class="single-explore-item">
+              <div class="single-explore-img">
+                <img src="{{ url_for('static', filename='images/explore/e5.jpg') }}" alt="explore image" />
+              </div>
+              <div class="single-explore-txt bg-theme-2">
+                <h2><a href="#">Jalan Kapten Muslihat</a></h2>
+                <a href="#" class="area">Area Trase 3</a>
+                <p class="explore-rating-price">
+                  <span class="status-traffic">Arus Lancar</span>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!--/.container-->
+</section>
+<!--/.explore-->
+<!--explore end -->
+
+<!--reviews start -->
+<section id="reviews" class="reviews">
+  <div class="section-header">
+    <h2>clients reviews</h2>
+    <p>What our client say about us</p>
+  </div>
+  <!--/.section-header-->
+  <div class="reviews-content">
+    <div class="testimonial-carousel">
+      <div class="single-testimonial-box">
+        <div class="testimonial-description">
+          <div class="testimonial-info">
+            <div class="testimonial-img">
+              <img src="{{ url_for('static', filename='images/clients/agil.jpg') }}" alt="clients" />
+            </div>
+            <!--/.testimonial-img-->
+            <div class="testimonial-person">
+              <h2>Agil ArRachman</h2>
+              <h4>J0403221108</h4>
+              <div class="testimonial-person-star">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+            </div>
+            <!--/.testimonial-person-->
+          </div>
+          <!--/.testimonial-info-->
+          <div class="testimonial-comment">
+            <p>Website Bogor Traffic sangat membantu! Feed CCTV real-time dan info kepadatan lalu lintas membuat perjalanan lebih lancar.</p>
+          </div>
+          <!--/.testimonial-comment-->
+        </div>
+        <!--/.testimonial-description-->
+      </div>
+      <!--/.single-testimonial-box-->
+      <div class="single-testimonial-box">
+        <div class="testimonial-description">
+          <div class="testimonial-info">
+            <div class="testimonial-img">
+              <img src="{{ url_for('static', filename='images/clients/amin.jpg') }}" alt="clients" />
+            </div>
+            <!--/.testimonial-img-->
+            <div class="testimonial-person">
+              <h2>Muhammad Al Amin</h2>
+              <h4>J0403221094</h4>
+              <div class="testimonial-person-star">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+            </div>
+            <!--/.testimonial-person-->
+          </div>
+          <!--/.testimonial-info-->
+          <div class="testimonial-comment">
+            <p>Dengan peta kepadatan dan CCTV langsung, saya bisa melihat kondisi jalan sebelum berangkat. Membuat berkendara di Bogor lebih mudah!</p>
+          </div>
+          <!--/.testimonial-comment-->
+        </div>
+        <!--/.testimonial-description-->
+      </div>
+      <!--/.single-testimonial-box-->
+      <div class="single-testimonial-box">
+        <div class="testimonial-description">
+          <div class="testimonial-info">
+            <div class="testimonial-img">
+              <img src="{{ url_for('static', filename='images/clients/kije.jpg') }}" alt="clients" />
+            </div>
+            <!--/.testimonial-img-->
+            <div class="testimonial-person">
+              <h2>Rizki Juliansyah</h2>
+              <h4>J0403221031</h4>
+              <div class="testimonial-person-star">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+            </div>
+            <!--/.testimonial-person-->
+          </div>
+          <!--/.testimonial-info-->
+          <div class="testimonial-comment">
+            <p>Pembaruan lalu lintas real-time dan grafik kepadatan sangat membantu perencanaan perjalanan saya. Alat yang sangat bermanfaat!</p>
+          </div>
+          <!--/.testimonial-comment-->
+        </div>
+        <!--/.testimonial-description-->
+      </div>
+      <!--/.single-testimonial-box-->
+      <div class="single-testimonial-box">
+        <div class="testimonial-description">
+          <div class="testimonial-info">
+            <div class="testimonial-img">
+              <img src="{{ url_for('static', filename='images/clients/aul.jpg') }}" alt="clients" />
+            </div>
+            <!--/.testimonial-img-->
+            <div class="testimonial-person">
+              <h2>Nurrizkyta Aulia</h2>
+              <h4>J0403221001</h4>
+              <div class="testimonial-person-star">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+            </div>
+            <!--/.testimonial-person-->
+          </div>
+          <!--/.testimonial-info-->
+          <div class="testimonial-comment">
+            <p>Antarmuka mudah digunakan dan data lalu lintas yang akurat membantu saya menghindari macet. Website ini sangat efisien!</p>
+          </div>
+          <!--/.testimonial-comment-->
+        </div>
+        <!--/.testimonial-description-->
+      </div>
+      <!--/.single-testimonial-box-->
+      <div class="single-testimonial-box">
+        <div class="testimonial-description">
+          <div class="testimonial-info">
+            <div class="testimonial-img">
+              <img src="{{ url_for('static', filename='images/clients/aisya.jpg') }}" alt="clients" />
+            </div>
+            <!--/.testimonial-img-->
+            <div class="testimonial-person">
+              <h2>Aisya Tyanafisya</h2>
+              <h4>J0403221079</h4>
+              <div class="testimonial-person-star">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+            </div>
+            <!--/.testimonial-person-->
+          </div>
+          <!--/.testimonial-info-->
+          <div class="testimonial-comment">
+            <p>Sangat berguna! Grafik kepadatan dan CCTV langsung membuat saya mudah merencanakan rute dan menghindari kemacetan.</p>
+          </div>
+          <!--/.testimonial-comment-->
+        </div>
+        <!--/.testimonial-description-->
+      </div>
+    </div>
+  </div>
+</section>
+<!--/.reviews-->
+<!--reviews end -->
+
+<!-- statistics strat -->
+<section id="statistics" class="statistics">
+  <div class="container">
+    <div class="statistics-counter">
+      <div class="col-md-3 col-sm-6">
+        <div class="single-ststistics-box">
+          <div class="statistics-content">
+            <div class="counter">4</div>
+            <span></span>
+          </div>
+          <!--/.statistics-content-->
+          <h3>roads monitored in real-time</h3>
+        </div>
+        <!--/.single-ststistics-box-->
+      </div>
+      <!--/.col-->
+      <div class="col-md-3 col-sm-6">
+        <div class="single-ststistics-box">
+          <div class="statistics-content">
+            <div class="counter">30</div>
+            <span>s</span>
+          </div>
+          <!--/.statistics-content-->
+          <h3>Traffic data updated</h3>
+        </div>
+        <!--/.single-ststistics-box-->
+      </div>
+      <!--/.col-->
+      <div class="col-md-3 col-sm-6">
+        <div class="single-ststistics-box">
+          <div class="statistics-content">
+            <div class="counter">65</div>
+            <span>k+</span>
+          </div>
+          <!--/.statistics-content-->
+          <h3>visitors</h3>
+        </div>
+        <!--/.single-ststistics-box-->
+      </div>
+      <!--/.col-->
+      <div class="col-md-3 col-sm-6">
+        <div class="single-ststistics-box">
+          <div class="statistics-content">
+            <div class="counter">98</div>
+            <span>%</span>
+          </div>
+          <!--/.statistics-content-->
+          <h3>happy clients</h3>
+        </div>
+        <!--/.single-ststistics-box-->
+      </div>
+      <!--/.col-->
+    </div>
+    <!--/.statistics-counter-->
+  </div>
+  <!--/.container-->
+</section>
+<!--/.counter-->
+<!-- statistics end -->
+
+<!--footer start-->
+<footer id="footer" class="footer">
+  <div class="container">
+    <div class="footer-menu">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">Bogor<span>Traffic</span></a>
+          </div>
+          <!--/.navbar-header-->
+        </div>
+        <div class="col-sm-9">
+          <ul class="footer-menu-item">
+            <li class="scroll"><a href="#works">how it works</a></li>
+            <li class="scroll"><a href="#explore">explore</a></li>
+            <li class="scroll"><a href="#reviews">review</a></li>
+          </ul>
+          <!--/.nav -->
+        </div>
+      </div>
+    </div>
+    <div class="hm-footer-copyright">
+      <div class="row">
+        <div class="col-sm-5">
+          <p>
+            &copy;copyright. designed and developed by
+            <a href="#">Sigma TPL B1 IPB University</a>
+          </p>
+          <!--/p-->
+        </div>
+        <div class="col-sm-7">
+          <div class="footer-social">
+            <span><i class="fa fa-phone"> +62 8123 456 7890</i></span>
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-linkedin"></i></a>
+            <a href="#"><i class="fa fa-google-plus"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.hm-footer-copyright-->
+  </div>
+  <!--/.container-->
+
+  <div id="scroll-Top">
+    <div class="return-to-top">
+      <i class="fa fa-angle-up" id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+    </div>
+  </div>
+  <!--/.scroll-Top-->
+</footer>
+<!--/.footer-->
+<!--footer end-->
+
+<!-- Include all js compiled plugins (below), or include individual files as needed -->
+
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+
+<!--modernizr.min.js-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+<!--bootstrap.min.js-->
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+<!-- bootsnav js -->
+<script src="{{ url_for('static', filename='js/bootsnav.js') }}"></script>
+
+<!--feather.min.js-->
+<script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
+
+<!-- counter js -->
+<script src="{{ url_for('static', filename='js/jquery.counterup.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/waypoints.min.js') }}"></script>
+
+<!--slick.min.js-->
+<script src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+<!--Custom JS-->
+<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+<script>
+  document.getElementById("search-input").addEventListener("input", function () {
+    const query = this.value.toLowerCase();
+    const autocompleteList = document.getElementById("autocomplete-list");
+    const items = document.querySelectorAll(".single-explore-item");
+
+    // Clear previous results
+    autocompleteList.innerHTML = "";
+
+    if (query.length === 0) {
+      autocompleteList.style.display = "none";
+      return;
+    }
+
+    let hasResults = false;
+
+    items.forEach((item) => {
+      const roadName = item.querySelector("h2 a").textContent.toLowerCase();
+      const area = item.querySelector(".area").textContent;
+      const status = item.querySelector(".status-traffic").textContent;
+      const imgSrc = item.querySelector("img").src;
+      const href = item.querySelector("h2 a").href; // Ambil href dari elemen link jalan
+
+      if (roadName.includes(query)) {
+        hasResults = true;
+
+        const div = document.createElement("div");
+        div.classList.add("autocomplete-item");
+
+        const link = document.createElement("a");
+        link.href = href;
+        link.style.textDecoration = "none";
+        link.style.color = "inherit";
+        link.style.display = "flex";
+
+        const imgDiv = document.createElement("div");
+        imgDiv.classList.add("autocomplete-img");
+        const img = document.createElement("img");
+        img.src = imgSrc;
+        img.alt = roadName;
+        imgDiv.appendChild(img);
+
+        const infoDiv = document.createElement("div");
+        infoDiv.classList.add("autocomplete-info");
+        const nameDiv = document.createElement("div");
+        nameDiv.classList.add("autocomplete-name");
+        nameDiv.textContent = roadName;
+
+        const areaDiv = document.createElement("div");
+        areaDiv.classList.add("autocomplete-area");
+        areaDiv.textContent = `Area: ${area}`;
+
+        const statusDiv = document.createElement("div");
+        statusDiv.classList.add("autocomplete-status");
+        statusDiv.textContent = `Status: ${status}`;
+
+        // Menambahkan kelas background berdasarkan status
+        if (status.toLowerCase() === "arus padat") {
+          statusDiv.classList.add("status-heavy");
+        } else if (status.toLowerCase() === "arus lancar") {
+          statusDiv.classList.add("status-smooth");
+        } else if (status.toLowerCase() === "arus sedikit padat") {
+          statusDiv.classList.add("status-light");
+        }
+
+        infoDiv.appendChild(nameDiv);
+        infoDiv.appendChild(areaDiv);
+        infoDiv.appendChild(statusDiv);
+
+        link.appendChild(imgDiv);
+        link.appendChild(infoDiv);
+
+        div.appendChild(link);
+        autocompleteList.appendChild(div);
+      }
+    });
+
+    autocompleteList.style.display = hasResults ? "block" : "none";
+  });
+
+  // Hide the autocomplete list when clicking outside
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest("#search-form")) {
+      document.getElementById("autocomplete-list").style.display = "none";
+    }
+  });
+</script>
+
+{% endblock %}

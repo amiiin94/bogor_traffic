@@ -17,14 +17,14 @@ vertices = np.array([(563, 134), (646, 140), (591, 359), (257, 303)], dtype=np.i
 road_area_m2 = 1632.19
 
 # Define vehicle sizes (length * width in meters)
-car_size_m2 = 4.5 * 2  # Car
+car_size_m2 = 4.5 * 1.8  # Car
 angkot_size_m2 = car_size_m2  # Angkot (same size as a car)
-motorcycle_size_m2 = 1.5 * 0.8  # Motorcycle
-truck_size_m2 = 2 * car_size_m2  # Truck (twice the size of a car)
-bus_size_m2 = 2 * car_size_m2  # Bus (twice the size of a car)
+motorcycle_size_m2 = 2.0 * 0.8  # Motorcycle
+truck_size_m2 = 7.5 * 2.5  # Truck (twice the size of a car)
+bus_size_m2 = 12.0 * 2.5  # Bus (twice the size of a car)
 
 # JSON file setup
-json_filename = os.path.join('static', 'traffic_data.json')
+json_filename = os.path.join('static/json', 'btm_data.json')
 
 # Initialize last_save_time
 last_save_time = time.time()

@@ -1,9 +1,126 @@
-{% extends 'base.html' %}
+{% extends 'explore_base.html' %}
 
 {% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 {% endblock %}
+
 {% block body %}
-<h1>Kapten Muslihat Traffic Analysis</h1>
-    <img src="{{ url_for('video_feed') }}" width="640" height="480">
+<h1>Jl. Ir. H. Juanda (Depan Mall BTM)</h1>
+<div class="container">
+    <div class="video-container">
+        <h3>Live cctv</h3>
+        <img src="{{ url_for('video_kapten_muslihat') }}" alt="Live Video Feed" style="width: 100%; border-radius: 8px;">
+    </div>
+    <div class="chart-container">
+        <h3>Grafik Kepadatan Lalu Lintas</h3>
+        <canvas id="trafficChart"></canvas>
+        
+        <!-- Legend for Traffic Status -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-circle legend-light"></div>
+                <span>Ringan (0% - 9%)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-circle legend-moderate"></div>
+                <span>Sedang (10% - 15%)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-circle legend-heavy"></div>
+                <span>Padat (> 15%)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    async function fetchTrafficData() {
+        try {
+            const response = await fetch("{{ url_for('kapten_muslihat_data_1') }}");
+            if (!response.ok) throw new Error("Failed to fetch data");
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    }
+
+    let trafficChart;
+
+    async function updateChart() {
+    const trafficData = await fetchTrafficData();
+    if (trafficData.length === 0) return;
+
+    const labels = trafficData.map(entry => entry.Timestamp);
+    const occupancy = trafficData.map(entry => entry['Occupancy Percentage']);
+
+    // Determine colors for each point based on traffic intensity
+    const borderColor = occupancy.map(value => {
+        if (value > 15) {
+            return 'rgba(255, 0, 0, 1)'; // Red for heavy traffic
+        } else if (value >= 10 && value <= 15) {
+            return 'rgba(255, 165, 0, 1)'; // Orange for moderate traffic
+        } else {
+            return 'rgba(0, 128, 0, 1)'; // Green for light traffic
+        }
+    });
+
+    const backgroundColor = borderColor.map(color => color.replace('1)', '0.2)')); // Lighter background for points
+
+    if (!trafficChart) {
+        const ctx = document.getElementById('trafficChart').getContext('2d');
+        trafficChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Kepadatan dalam persen(%)',
+                    data: occupancy,
+                    borderColor: borderColor,  // Set the border color for each point
+                    backgroundColor: backgroundColor, // Set the background color for points
+                    borderWidth: 2,
+                    tension: 0.4, // Smooth line
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: value => value + '%',
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 10
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    } else {
+        trafficChart.data.labels = labels;
+        trafficChart.data.datasets[0].data = occupancy;
+        trafficChart.data.datasets[0].borderColor = borderColor;
+        trafficChart.data.datasets[0].backgroundColor = backgroundColor;
+        trafficChart.update();
+    }
+}
+
+    updateChart();
+    setInterval(updateChart, 10000);
+</script>
+
 {% endblock %}

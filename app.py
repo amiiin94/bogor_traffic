@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Response
-from btm import generate_frames
+from python.btm import generate_frames
+from python.kapten_muslihat import generate_kapten_muslihat_frames
 import pandas as pd
 from flask import jsonify
 import json
@@ -25,7 +26,7 @@ def lawanggintung():
 
 @app.route('/depan-mall-btm')
 def depan_mall_btm():
-    return render_template('depan_mall_btm.html')
+    return render_template('btm.html')
 
 @app.route('/kapten-muslihat')
 def kapten_muslihat_view():
@@ -36,12 +37,32 @@ def video_feed_btm():
     return Response(generate_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+# Route to start video feed for kapten muslihat
+@app.route('/video_kapten_muslihat')
+def video_kapten_muslihat():
+    return Response(generate_kapten_muslihat_frames(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/get_traffic_data')
-def get_traffic_data():
-    with open('static/traffic_data.json', 'r') as file:
+
+@app.route('/btm_data')
+def btm_data():
+    with open('static/json/btm_data.json', 'r') as file:
         data = json.load(file)
     return jsonify(data)
+
+@app.route('/kapten_muslihat_data_1')
+def kapten_muslihat_data_1():
+    with open('static/json/kapten_muslihat_1.json', 'r') as file:
+        data = json.load(file)
+    return jsonify(data)
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':

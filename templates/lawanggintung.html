@@ -10,7 +10,7 @@
 <div class="container">
     <div class="video-container">
         <h3>Live cctv</h3>
-        <img src="{{ url_for('video_feed_btm') }}" alt="Live Video Feed" style="width: 100%; border-radius: 8px;">
+        <img src="{{ url_for('video_lawanggintung') }}" alt="Live Video Feed" style="width: 100%; border-radius: 8px;">
     </div>
     <div class="chart-container">
         <h3>Grafik Kepadatan Lalu Lintas</h3>
@@ -38,7 +38,7 @@
     
     async function fetchTrafficData() {
         try {
-            const response = await fetch("{{ url_for('btm_data') }}");
+            const response = await fetch("{{ url_for('lawanggintung_data') }}");
             if (!response.ok) throw new Error("Failed to fetch data");
             return await response.json();
         } catch (error) {

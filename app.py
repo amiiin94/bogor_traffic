@@ -1,6 +1,7 @@
 from flask import Flask, render_template, Response
 from python.btm import generate_frames
 from python.kapten_muslihat import generate_kapten_muslihat_frames
+from python.lawanggintung import generate_lawanggintung_frames
 import pandas as pd
 from flask import jsonify
 import json
@@ -46,7 +47,7 @@ def video_kapten_muslihat():
 
 @app.route('/video_lawanggintung')
 def video_lawanggintung():
-    return Response(video_lawanggintung(),
+    return Response(generate_lawanggintung_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
@@ -70,7 +71,7 @@ def kapten_muslihat_data_2():
     return jsonify(data)
 
 @app.route('/lawanggintung_data')
-def kapten_muslihat_data_2():
+def lawanggintung_data():
     with open('static/json/lawanggintung_data.json', 'r') as file:
         data = json.load(file)
     return jsonify(data)

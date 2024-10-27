@@ -11,7 +11,7 @@ import os
 model = YOLO("models/best2.pt").to("cuda")
 
 # Define ROI for jalan 1 as a polygon
-roi_polygon_1 = np.array([(530, 106), (495, 106), (0, 571), (502, 553)], np.int32)
+roi_polygon_1 = np.array([ (485, 70), (418, 70), (362, 210), (666, 154)], np.int32)
 
 # Define road dimensions and vehicle sizes
 road_length_m = 90
@@ -35,7 +35,7 @@ colors = {
 }
 
 # JSON file setup for jalan 1
-json_filename_1 = os.path.join('static/json', 'kapten_muslihat_1.json')
+json_filename_1 = os.path.join('static/json', 'lawanggintung_data.json')
 
 # Initialize last_save_time
 last_save_time = time.time()
@@ -84,9 +84,9 @@ def save_to_json(occupancy_percentage, filename):
     with open(filename, 'w') as file:
         json.dump(json_data, file, indent=4)
 
-def generate_kapten_muslihat_frames():
+def generate_lawanggintung_frames():
     global last_save_time
-    video_path = "static/videos/kapten_muslihat.mp4"  # or 0 for webcam
+    video_path = "static/videos/sukasari.mp4"  # or 0 for webcam
     cap = cv2.VideoCapture(video_path)
 
     # Initialize empty JSON file if it doesn't exist

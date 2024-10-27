@@ -74,5 +74,17 @@
     {
         "Timestamp": "2024-10-27 16:20:43",
         "Occupancy Percentage": 0.5987654320987654
+    },
+    {
+        "Timestamp": "2024-10-27 18:19:45",
+        "Occupancy Percentage": 2.1574074074074074
+    },
+    {
+        "Timestamp": "2024-10-27 18:20:27",
+        "Occupancy Percentage": 2.2962962962962967
+    },
+    {
+        "Timestamp": "2024-10-27 18:20:37",
+        "Occupancy Percentage": 3.25
     }
 ]

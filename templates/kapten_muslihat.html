@@ -2,7 +2,84 @@
 
 {% block head %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+        margin: 20px 0;
+    }
+    .container {
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    .video-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .charts-container {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    .chart-container {
+        flex: 1;
+        min-width: 300px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+    }
+    .legend {
+        margin-top: 15px;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    .legend-circle {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+    .legend-light {
+        background-color: green;
+    }
+    .legend-moderate {
+        background-color: orange;
+    }
+    .legend-heavy {
+        background-color: red;
+    }
+    img {
+        width: 100%;
+        border-radius: 8px;
+    }
+    h3 {
+        color: #333;
+        margin: 0 0 15px 0;
+    }
 
+    @media (max-width: 768px) {
+        .charts-container {
+            flex-direction: column;
+        }
+        .chart-container {
+            width: 100%;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block body %}
@@ -10,35 +87,63 @@
 <div class="container">
     <div class="video-container">
         <h3>Live cctv</h3>
-        <img src="{{ url_for('video_kapten_muslihat') }}" alt="Live Video Feed" style="width: 100%; border-radius: 8px;">
+        <img src="{{ url_for('video_kapten_muslihat') }}" alt="Live Video Feed">
     </div>
-    <div class="chart-container">
-        <h3>Grafik Kepadatan Lalu Lintas</h3>
-        <canvas id="trafficChart"></canvas>
-        
-        <!-- Legend for Traffic Status -->
-        <div class="legend">
-            <div class="legend-item">
-                <div class="legend-circle legend-light"></div>
-                <span>Ringan (0% - 9%)</span>
+    
+    <div class="charts-container">
+        <div class="chart-container">
+            <h3>Grafik Kepadatan Lalu Lintas - Arah 1</h3>
+            <canvas id="trafficChart1"></canvas>
+            
+            <!-- Legend for Traffic Status -->
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-circle legend-light"></div>
+                    <span>Ringan (0% - 9%)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle legend-moderate"></div>
+                    <span>Sedang (10% - 15%)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle legend-heavy"></div>
+                    <span>Padat (> 15%)</span>
+                </div>
             </div>
-            <div class="legend-item">
-                <div class="legend-circle legend-moderate"></div>
-                <span>Sedang (10% - 15%)</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-circle legend-heavy"></div>
-                <span>Padat (> 15%)</span>
+        </div>
+
+        <div class="chart-container">
+            <h3>Grafik Kepadatan Lalu Lintas - Arah 2</h3>
+            <canvas id="trafficChart2"></canvas>
+            
+            <!-- Legend for Traffic Status -->
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-circle legend-light"></div>
+                    <span>Ringan (0% - 9%)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle legend-moderate"></div>
+                    <span>Sedang (10% - 15%)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle legend-heavy"></div>
+                    <span>Padat (> 15%)</span>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    
-    async function fetchTrafficData() {
+    const ENDPOINTS = {
+        route1: "{{ url_for('kapten_muslihat_data_1') }}",
+        route2: "{{ url_for('kapten_muslihat_data_2') }}"
+    };
+
+    async function fetchTrafficData(endpoint) {
         try {
-            const response = await fetch("{{ url_for('kapten_muslihat_data_1') }}");
+            const response = await fetch(endpoint);
             if (!response.ok) throw new Error("Failed to fetch data");
             return await response.json();
         } catch (error) {
@@ -47,80 +152,103 @@
         }
     }
 
-    let trafficChart;
+    function createChartConfig(data) {
+        const labels = data.map(entry => entry.Timestamp);
+        const occupancy = data.map(entry => entry['Occupancy Percentage']);
 
-    async function updateChart() {
-    const trafficData = await fetchTrafficData();
-    if (trafficData.length === 0) return;
-
-    const labels = trafficData.map(entry => entry.Timestamp);
-    const occupancy = trafficData.map(entry => entry['Occupancy Percentage']);
-
-    // Determine colors for each point based on traffic intensity
-    const borderColor = occupancy.map(value => {
-        if (value > 15) {
-            return 'rgba(255, 0, 0, 1)'; // Red for heavy traffic
-        } else if (value >= 10 && value <= 15) {
-            return 'rgba(255, 165, 0, 1)'; // Orange for moderate traffic
-        } else {
-            return 'rgba(0, 128, 0, 1)'; // Green for light traffic
-        }
-    });
-
-    const backgroundColor = borderColor.map(color => color.replace('1)', '0.2)')); // Lighter background for points
-
-    if (!trafficChart) {
-        const ctx = document.getElementById('trafficChart').getContext('2d');
-        trafficChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Kepadatan dalam persen(%)',
-                    data: occupancy,
-                    borderColor: borderColor,  // Set the border color for each point
-                    backgroundColor: backgroundColor, // Set the background color for points
-                    borderWidth: 2,
-                    tension: 0.4, // Smooth line
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: value => value + '%',
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            autoSkip: true,
-                            maxTicksLimit: 10
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
+        const borderColor = occupancy.map(value => {
+            if (value > 15) {
+                return 'rgba(255, 0, 0, 1)';
+            } else if (value >= 10 && value <= 15) {
+                return 'rgba(255, 165, 0, 1)';
+            } else {
+                return 'rgba(0, 128, 0, 1)';
             }
         });
-    } else {
-        trafficChart.data.labels = labels;
-        trafficChart.data.datasets[0].data = occupancy;
-        trafficChart.data.datasets[0].borderColor = borderColor;
-        trafficChart.data.datasets[0].backgroundColor = backgroundColor;
-        trafficChart.update();
+
+        const backgroundColor = borderColor.map(color => color.replace('1)', '0.2)'));
+
+        return {
+            labels: labels,
+            datasets: [{
+                label: 'Kepadatan dalam persen(%)',
+                data: occupancy,
+                borderColor: borderColor,
+                backgroundColor: backgroundColor,
+                borderWidth: 2,
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                fill: false
+            }]
+        };
     }
-}
 
-    updateChart();
-    setInterval(updateChart, 10000);
+    const chartOptions = {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: value => value + '%',
+                }
+            },
+            x: {
+                ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 10
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    };
+
+    let trafficChart1;
+    let trafficChart2;
+
+    async function updateCharts() {
+        // Update Chart 1
+        const trafficData1 = await fetchTrafficData(ENDPOINTS.route1);
+        if (trafficData1.length > 0) {
+            const config1 = createChartConfig(trafficData1);
+            
+            if (!trafficChart1) {
+                const ctx1 = document.getElementById('trafficChart1').getContext('2d');
+                trafficChart1 = new Chart(ctx1, {
+                    type: 'line',
+                    data: config1,
+                    options: chartOptions
+                });
+            } else {
+                trafficChart1.data = config1;
+                trafficChart1.update();
+            }
+        }
+
+        // Update Chart 2
+        const trafficData2 = await fetchTrafficData(ENDPOINTS.route2);
+        if (trafficData2.length > 0) {
+            const config2 = createChartConfig(trafficData2);
+            
+            if (!trafficChart2) {
+                const ctx2 = document.getElementById('trafficChart2').getContext('2d');
+                trafficChart2 = new Chart(ctx2, {
+                    type: 'line',
+                    data: config2,
+                    options: chartOptions
+                });
+            } else {
+                trafficChart2.data = config2;
+                trafficChart2.update();
+            }
+        }
+    }
+
+    updateCharts();
+    setInterval(updateCharts, 10000);
 </script>
-
 {% endblock %}

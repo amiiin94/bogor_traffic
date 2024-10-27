@@ -39,10 +39,14 @@ def video_feed_btm():
     return Response(generate_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-# Route to start video feed for kapten muslihat
 @app.route('/video_kapten_muslihat')
 def video_kapten_muslihat():
     return Response(generate_kapten_muslihat_frames(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/video_lawanggintung')
+def video_lawanggintung():
+    return Response(video_lawanggintung(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
@@ -62,6 +66,12 @@ def kapten_muslihat_data_1():
 @app.route('/kapten_muslihat_data_2')
 def kapten_muslihat_data_2():
     with open('static/json/kapten_muslihat_2.json', 'r') as file:
+        data = json.load(file)
+    return jsonify(data)
+
+@app.route('/lawanggintung_data')
+def kapten_muslihat_data_2():
+    with open('static/json/lawanggintung_data.json', 'r') as file:
         data = json.load(file)
     return jsonify(data)
 

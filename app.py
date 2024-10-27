@@ -8,6 +8,7 @@ import json
 
 app = Flask(__name__)
 
+# Route web
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -32,6 +33,7 @@ def depan_mall_btm():
 def kapten_muslihat_view():
     return render_template('kapten_muslihat.html')
 
+# Route video
 @app.route('/video_feed_btm')
 def video_feed_btm():
     return Response(generate_frames(),
@@ -44,6 +46,7 @@ def video_kapten_muslihat():
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+# Route file json
 @app.route('/btm_data')
 def btm_data():
     with open('static/json/btm_data.json', 'r') as file:
@@ -56,6 +59,11 @@ def kapten_muslihat_data_1():
         data = json.load(file)
     return jsonify(data)
 
+@app.route('/kapten_muslihat_data_2')
+def kapten_muslihat_data_2():
+    with open('static/json/kapten_muslihat_2.json', 'r') as file:
+        data = json.load(file)
+    return jsonify(data)
 
 
 

@@ -10,5 +10,77 @@
     {
         "Timestamp": "2024-10-28 09:45:34",
         "Occupancy Percentage": 2.6574074074074074
+    },
+    {
+        "Timestamp": "2024-10-28 16:52:09",
+        "Occupancy Percentage": 50.64705882352941
+    },
+    {
+        "Timestamp": "2024-10-28 16:52:28",
+        "Occupancy Percentage": 50.64705882352941
+    },
+    {
+        "Timestamp": "2024-10-28 16:52:38",
+        "Occupancy Percentage": 56.29411764705884
+    },
+    {
+        "Timestamp": "2024-10-28 16:52:48",
+        "Occupancy Percentage": 38.00000000000001
+    },
+    {
+        "Timestamp": "2024-10-28 16:52:58",
+        "Occupancy Percentage": 51.411764705882355
+    },
+    {
+        "Timestamp": "2024-10-28 16:53:08",
+        "Occupancy Percentage": 57.058823529411775
+    },
+    {
+        "Timestamp": "2024-10-28 16:53:19",
+        "Occupancy Percentage": 39.88235294117647
+    },
+    {
+        "Timestamp": "2024-10-28 16:53:29",
+        "Occupancy Percentage": 48.64705882352941
+    },
+    {
+        "Timestamp": "2024-10-28 16:53:39",
+        "Occupancy Percentage": 65.82352941176471
+    },
+    {
+        "Timestamp": "2024-10-28 16:53:49",
+        "Occupancy Percentage": 47.529411764705884
+    },
+    {
+        "Timestamp": "2024-10-28 16:53:59",
+        "Occupancy Percentage": 38.00000000000001
+    },
+    {
+        "Timestamp": "2024-10-28 16:54:09",
+        "Occupancy Percentage": 53.294117647058826
+    },
+    {
+        "Timestamp": "2024-10-28 16:54:19",
+        "Occupancy Percentage": 60.058823529411775
+    },
+    {
+        "Timestamp": "2024-10-28 16:54:44",
+        "Occupancy Percentage": 50.64705882352941
+    },
+    {
+        "Timestamp": "2024-10-28 16:54:55",
+        "Occupancy Percentage": 55.176470588235304
+    },
+    {
+        "Timestamp": "2024-10-28 16:55:05",
+        "Occupancy Percentage": 83.0
+    },
+    {
+        "Timestamp": "2024-10-28 16:55:15",
+        "Occupancy Percentage": 36.11764705882353
+    },
+    {
+        "Timestamp": "2024-10-28 16:59:41",
+        "Occupancy Percentage": 50.64705882352941
     }
 ]

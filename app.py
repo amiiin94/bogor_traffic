@@ -1,5 +1,5 @@
 from flask import Flask, render_template, Response
-from python.btm import generate_frames
+from python.btm import generate_btm_frames
 from python.kapten_muslihat import generate_kapten_muslihat_frames
 from python.lawanggintung import generate_lawanggintung_frames
 from python.tugu_kujang import generate_tugu_kujang_frames
@@ -38,7 +38,7 @@ def kapten_muslihat_view():
 # Route video
 @app.route('/video_feed_btm')
 def video_feed_btm():
-    return Response(generate_frames(),
+    return Response(generate_btm_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/video_kapten_muslihat')

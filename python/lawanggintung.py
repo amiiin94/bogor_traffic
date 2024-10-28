@@ -14,9 +14,7 @@ model = YOLO("models/best2.pt").to("cuda")
 roi_polygon_1 = np.array([ (485, 70), (418, 70), (362, 210), (666, 154)], np.int32)
 
 # Define road dimensions and vehicle sizes
-road_length_m = 90
-road_width_m = 18
-road_area_m2 = road_length_m * road_width_m
+road_area_m2 = 85
 
 vehicle_sizes = {
     'mobil': {'length': 4.5, 'width': 1.8, 'area': 4.5 * 1.8},
@@ -133,7 +131,6 @@ def generate_lawanggintung_frames():
         y_pos = 30
         text_gap = 20
 
-        cv2.putText(visualization_frame, "Arah Stasiun Bogor", (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 0.8, level_color_1, 2)
         y_pos += text_gap
 
         for vehicle_type, count in vehicle_counts_1.items():

@@ -10,56 +10,65 @@ import os
 # Load the YOLOv8 model
 model = YOLO("models/best2.pt").to("cuda")
 
-# Define the region of interest (ROI)
-vertices = np.array([(563, 134), (646, 140), (591, 359), (257, 303)], dtype=np.int32)
-
+roi_polygon_1 = np.array([(563, 134), (646, 140), (591, 359), (257, 303)], dtype=np.int32)
 # Set the actual road area in square meters
-road_area_m2 = 1632.19
+road_area_m2 = 500
 
-# Define vehicle sizes (length * width in meters)
-car_size_m2 = 4.5 * 1.8  # Car
-angkot_size_m2 = car_size_m2  # Angkot (same size as a car)
-motorcycle_size_m2 = 2.0 * 0.8  # Motorcycle
-truck_size_m2 = 7.5 * 2.5  # Truck (twice the size of a car)
-bus_size_m2 = 12.0 * 2.5  # Bus (twice the size of a car)
+vehicle_sizes = {
+    'mobil': {'length': 4.5, 'width': 1.8, 'area': 4.5 * 1.8},
+    'angkot': {'length': 4.5, 'width': 1.8, 'area': 4.5 * 1.8},
+    'motor': {'length': 2.0, 'width': 0.8, 'area': 2.0 * 0.8},
+    'truk': {'length': 7.5, 'width': 2.5, 'area': 7.5 * 2.5},
+    'bis': {'length': 12.0, 'width': 2.5, 'area': 12.0 * 2.5}
+}
 
-# JSON file setup
-json_filename = os.path.join('static/json', 'btm_data.json')
+colors = {
+    'mobil': (0, 255, 0),
+    'angkot': (0, 255, 255),
+    'motor': (255, 0, 0),
+    'truk': (0, 0, 255),
+    'bis': (255, 165, 0)
+}
+
+# JSON file setup for jalan 1
+json_filename_1 = os.path.join('static/json', 'btm_data.json')
 
 # Initialize last_save_time
 last_save_time = time.time()
 
-def point_inside_polygon(x, y, poly):
-    n = len(poly)
-    inside = False
-    p1x, p1y = poly[0]
-    for i in range(n + 1):
-        p2x, p2y = poly[i % n]
-        if y > min(p1y, p2y):
-            if y <= max(p1y, p2y):
-                if x <= max(p1x, p2x):
-                    if p1y != p2y:
-                        xinters = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
-                    if p1x == p2x or x <= xinters:
-                        inside = not inside
-        p1x, p1y = p2x, p1y
-    return inside
+def is_box_in_roi(box, roi_polygon):
+    mask = np.zeros((800, 1280), dtype=np.uint8)
+    cv2.fillPoly(mask, [roi_polygon], 1)
+    
+    box_mask = np.zeros((800, 1280), dtype=np.uint8)
+    cv2.rectangle(box_mask, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), 1, -1)
+    
+    intersection = cv2.bitwise_and(mask, box_mask)
+    intersection_area = cv2.countNonZero(intersection)
+    
+    box_area = (box[2] - box[0]) * (box[3] - box[1])
+    overlap_ratio = intersection_area / box_area
+    
+    return overlap_ratio > 0.3
 
-def get_traffic_intensity(occupancy_percentage):
-    if occupancy_percentage < 10:
-        return "Lancar", (0, 255, 0)
-    elif occupancy_percentage < 20:
+def get_traffic_level(occupancy_percent):
+    OCCUPANCY_RINGAN = 15
+    OCCUPANCY_SEDANG = 30
+
+    if occupancy_percent <= OCCUPANCY_RINGAN:
+        return "Ringan", (0, 255, 0)
+    elif occupancy_percent <= OCCUPANCY_SEDANG:
         return "Sedang", (0, 255, 255)
     else:
         return "Padat", (0, 0, 255)
 
-def save_to_json(occupancy_percentage):
+def save_to_json(occupancy_percentage, filename):
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     data = {"Timestamp": current_time, "Occupancy Percentage": occupancy_percentage}
 
     # Read existing data
-    if os.path.exists(json_filename):
-        with open(json_filename, 'r') as file:
+    if os.path.exists(filename):
+        with open(filename, 'r') as file:
             json_data = json.load(file)
     else:
         json_data = []
@@ -68,124 +77,77 @@ def save_to_json(occupancy_percentage):
     json_data.append(data)
 
     # Save back to JSON file
-    with open(json_filename, 'w') as file:
+    with open(filename, 'w') as file:
         json.dump(json_data, file, indent=4)
 
-def generate_frames():
+def generate_btm_frames():
     global last_save_time
-    video_path = "static/videos/btm.mp4"  # or 0 for webcam
+    video_path = "static/videos/btm2.mp4"  # or 0 for webcam
     cap = cv2.VideoCapture(video_path)
 
-    # Initialize empty JSON file
-    if not os.path.exists(json_filename):
-        with open(json_filename, 'w') as file:
+    # Initialize empty JSON file if it doesn't exist
+    if not os.path.exists(json_filename_1):
+        with open(json_filename_1, 'w') as file:
             json.dump([], file)
 
     while cap.isOpened():
         success, frame = cap.read()
-        if success:
-            # Run YOLOv8 inference on the frame
-            results = model(frame, imgsz=640)  # You can specify the size parameter
-
-            # Initialize counters for each vehicle type
-            car_count = 0
-            angkot_count = 0
-            motorcycle_count = 0
-            truck_count = 0
-            bus_count = 0
-            total_occupied_area = 0
-
-            # Process detections
-            for r in results:
-                boxes = r.boxes
-                for box in boxes:
-                    # Get box coordinates
-                    x1, y1, x2, y2 = box.xyxy[0]
-                    x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-
-                    # Check if the center of the box is inside the polygon
-                    center_x = (x1 + x2) // 2
-                    center_y = (y1 + y2) // 2
-                    if point_inside_polygon(center_x, center_y, vertices):
-                        # Get the class of the detected object
-                        cls = int(box.cls[0])
-                        class_name = model.names[cls]
-
-                        if class_name == 'mobil':
-                            car_count += 1
-                            total_occupied_area += car_size_m2
-                            color = (0, 255, 0)
-                        elif class_name == 'angkot':
-                            angkot_count += 1
-                            total_occupied_area += angkot_size_m2
-                            color = (0, 255, 255)  # Yellow for angkot
-                        elif class_name == 'motor':
-                            motorcycle_count += 1
-                            total_occupied_area += motorcycle_size_m2
-                            color = (255, 0, 0)  # Blue for motorcycles
-                        elif class_name == 'truk':
-                            truck_count += 1
-                            total_occupied_area += truck_size_m2
-                            color = (0, 0, 255)  # Red for trucks
-                        elif class_name == 'bis':
-                            bus_count += 1
-                            total_occupied_area += bus_size_m2
-                            color = (255, 165, 0)  # Orange for buses
-                        else:
-                            continue
-
-                        # Draw bounding box
-                        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
-
-                        # Add label
-                        label = f"{class_name}"
-                        cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-
-            # Calculate road occupancy
-            occupancy_percentage = (total_occupied_area / road_area_m2) * 100
-
-            # Save to JSON every 10 seconds
-            current_time = time.time()
-            if current_time - last_save_time >= 10:
-                save_to_json(occupancy_percentage)
-                last_save_time = current_time
-
-            # Determine traffic intensity based on occupancy
-            traffic_intensity, intensity_color = get_traffic_intensity(occupancy_percentage)
-
-            # Draw the polygon on the frame
-            cv2.polylines(frame, [vertices], True, (0, 255, 0), 2)
-
-            # Initialize the vertical position for text display
-            y_pos = 30
-            text_gap = 40  # Gap between each line of text
-
-            # Add text to the frame for all vehicle counts
-            cv2.putText(frame, f"Mobil: {car_count}", (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-            y_pos += text_gap
-            cv2.putText(frame, f"Angkot: {angkot_count}", (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
-            y_pos += text_gap
-            cv2.putText(frame, f"Motor: {motorcycle_count}", (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-            y_pos += text_gap
-            cv2.putText(frame, f"Truk: {truck_count}", (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-            y_pos += text_gap
-            cv2.putText(frame, f"Bis: {bus_count}", (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 165, 0), 2)
-            y_pos += text_gap
-
-            # Show the occupancy percentage and traffic intensity
-            cv2.putText(frame, f"Kepadatan: {occupancy_percentage:.2f}%", (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-            y_pos += text_gap
-            cv2.putText(frame, f"Traffic: {traffic_intensity}", (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 1, intensity_color, 2)
-
-
-            # Encode the frame as JPEG
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-
-            # Yield the frame in bytes
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-        else:
+        if not success:
             break
+
+        visualization_frame = frame.copy()
+        results = model(frame, imgsz=640, conf=0.3)
+
+        vehicle_counts_1 = {vehicle_type: 0 for vehicle_type in vehicle_sizes.keys()}
+        total_occupied_area_1 = 0
+
+        # Draw ROI for jalan 1
+        cv2.polylines(visualization_frame, [roi_polygon_1], True, (0, 255, 0), 2)
+
+        for r in results:
+            boxes = r.boxes
+            for box in boxes:
+                x1, y1, x2, y2 = map(int, box.xyxy[0])
+                confidence = float(box.conf[0])
+                cls = int(box.cls[0])
+                class_name = model.names[cls]
+
+                color = colors.get(class_name, (128, 128, 128))
+                cv2.rectangle(visualization_frame, (x1, y1), (x2, y2), color, 2)
+                label = f"{class_name} {confidence:.2f}"
+                cv2.putText(visualization_frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+
+                if class_name in vehicle_sizes:
+                    if is_box_in_roi([x1, y1, x2, y2], roi_polygon_1):
+                        vehicle_counts_1[class_name] += 1
+                        total_occupied_area_1 += vehicle_sizes[class_name]['area']
+
+        occupancy_percentage_1 = (total_occupied_area_1 / road_area_m2) * 100
+        traffic_level_1, level_color_1 = get_traffic_level(occupancy_percentage_1)
+
+        # Display information for jalan 1
+        y_pos = 30
+        text_gap = 20
+
+        y_pos += text_gap
+
+        for vehicle_type, count in vehicle_counts_1.items():
+            color = colors.get(vehicle_type, (255, 255, 255))
+            cv2.putText(visualization_frame, f"{vehicle_type}: {count}", (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
+            y_pos += text_gap
+
+        cv2.putText(visualization_frame, f"Occupancy: {occupancy_percentage_1:.1f}%", (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
+        y_pos += text_gap
+        cv2.putText(visualization_frame, f"Status: {traffic_level_1}", (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 0.6, level_color_1, 2)
+
+        current_time = time.time()
+        if current_time - last_save_time >= 10:
+            save_to_json(occupancy_percentage_1, json_filename_1)  # Pass filename for ROI 1
+            last_save_time = current_time
+
+        ret, buffer = cv2.imencode('.jpg', visualization_frame)
+        frame = buffer.tobytes()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
     cap.release()

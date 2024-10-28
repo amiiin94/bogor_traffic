@@ -2,6 +2,7 @@ from flask import Flask, render_template, Response
 from python.btm import generate_frames
 from python.kapten_muslihat import generate_kapten_muslihat_frames
 from python.lawanggintung import generate_lawanggintung_frames
+from python.tugu_kujang import generate_tugu_kujang_frames
 import pandas as pd
 from flask import jsonify
 import json
@@ -50,6 +51,11 @@ def video_lawanggintung():
     return Response(generate_lawanggintung_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/video_tugu_kujang')
+def video_tugu_kujang():
+    return Response(generate_tugu_kujang_frames(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 # Route file json
 @app.route('/btm_data')
@@ -73,6 +79,18 @@ def kapten_muslihat_data_2():
 @app.route('/lawanggintung_data')
 def lawanggintung_data():
     with open('static/json/lawanggintung_data.json', 'r') as file:
+        data = json.load(file)
+    return jsonify(data)
+
+@app.route('/tugu_kujang_data_1')
+def tugu_kujang_data_1():
+    with open('static/json/tugu_kujang_data_1.json', 'r') as file:
+        data = json.load(file)
+    return jsonify(data)
+
+@app.route('/tugu_kujang_data_2')
+def tugu_kujang_data_2():
+    with open('static/json/tugu_kujang_data_2.json', 'r') as file:
         data = json.load(file)
     return jsonify(data)
 

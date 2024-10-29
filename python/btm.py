@@ -10,7 +10,7 @@ import os
 # Load the YOLOv8 model
 model = YOLO("models/best2.pt").to("cuda")
 
-roi_polygon_1 = np.array([(563, 134), (646, 140), (591, 359), (257, 303)], dtype=np.int32)
+roi_polygon_1 = np.array([(563, 134), (646, 140), (588, 318), (699, 462), (700, 575), (0, 575), (0, 489)], dtype=np.int32)
 # Set the actual road area in square meters
 road_area_m2 = 500
 
@@ -52,8 +52,8 @@ def is_box_in_roi(box, roi_polygon):
     return overlap_ratio > 0.3
 
 def get_traffic_level(occupancy_percent):
-    OCCUPANCY_RINGAN = 15
-    OCCUPANCY_SEDANG = 30
+    OCCUPANCY_RINGAN = 10
+    OCCUPANCY_SEDANG = 20
 
     if occupancy_percent <= OCCUPANCY_RINGAN:
         return "Ringan", (0, 255, 0)

@@ -162,5 +162,149 @@
     {
         "Timestamp": "2024-10-28 17:20:10",
         "Occupancy Percentage": 24.429999999999982
+    },
+    {
+        "Timestamp": "2024-10-29 17:01:50",
+        "Occupancy Percentage": 30.779999999999998
+    },
+    {
+        "Timestamp": "2024-10-29 17:02:00",
+        "Occupancy Percentage": 25.129999999999992
+    },
+    {
+        "Timestamp": "2024-10-29 17:02:10",
+        "Occupancy Percentage": 33.399999999999984
+    },
+    {
+        "Timestamp": "2024-10-29 17:02:20",
+        "Occupancy Percentage": 32.24999999999999
+    },
+    {
+        "Timestamp": "2024-10-29 10:11:01",
+        "Occupancy Percentage": 30.779999999999998
+    },
+    {
+        "Timestamp": "2024-10-29 10:19:11",
+        "Occupancy Percentage": 30.779999999999998
+    },
+    {
+        "Timestamp": "2024-10-29 10:19:21",
+        "Occupancy Percentage": 27.069999999999993
+    },
+    {
+        "Timestamp": "2024-10-29 10:21:02",
+        "Occupancy Percentage": 30.779999999999998
+    },
+    {
+        "Timestamp": "2024-10-29 10:23:44",
+        "Occupancy Percentage": 30.779999999999998
+    },
+    {
+        "Timestamp": "2024-10-29 10:23:54",
+        "Occupancy Percentage": 27.069999999999993
+    },
+    {
+        "Timestamp": "2024-10-29 10:24:34",
+        "Occupancy Percentage": 30.779999999999998
+    },
+    {
+        "Timestamp": "2024-10-29 10:24:44",
+        "Occupancy Percentage": 27.069999999999993
+    },
+    {
+        "Timestamp": "2024-10-29 10:37:22",
+        "Occupancy Percentage": 30.779999999999998
+    },
+    {
+        "Timestamp": "2024-10-29 10:37:38",
+        "Occupancy Percentage": 30.779999999999998
+    },
+    {
+        "Timestamp": "2024-10-29 10:37:48",
+        "Occupancy Percentage": 27.069999999999993
+    },
+    {
+        "Timestamp": "2024-10-29 10:42:31",
+        "Occupancy Percentage": 42.71999999999997
+    },
+    {
+        "Timestamp": "2024-10-29 10:42:41",
+        "Occupancy Percentage": 41.439999999999976
+    },
+    {
+        "Timestamp": "2024-10-29 10:48:07",
+        "Occupancy Percentage": 48.859999999999964
+    },
+    {
+        "Timestamp": "2024-10-29 10:48:17",
+        "Occupancy Percentage": 47.57999999999997
+    },
+    {
+        "Timestamp": "2024-10-29 10:49:03",
+        "Occupancy Percentage": 46.299999999999976
+    },
+    {
+        "Timestamp": "2024-10-29 11:06:26",
+        "Occupancy Percentage": 46.299999999999976
+    },
+    {
+        "Timestamp": "2024-10-29 11:06:36",
+        "Occupancy Percentage": 48.74999999999997
+    },
+    {
+        "Timestamp": "2024-10-29 11:06:46",
+        "Occupancy Percentage": 42.71999999999997
+    },
+    {
+        "Timestamp": "2024-10-29 11:06:56",
+        "Occupancy Percentage": 53.25999999999998
+    },
+    {
+        "Timestamp": "2024-10-29 11:07:07",
+        "Occupancy Percentage": 49.199999999999974
+    },
+    {
+        "Timestamp": "2024-10-29 11:07:17",
+        "Occupancy Percentage": 44.65999999999997
+    },
+    {
+        "Timestamp": "2024-10-29 11:07:27",
+        "Occupancy Percentage": 50.339999999999975
+    },
+    {
+        "Timestamp": "2024-10-29 11:07:37",
+        "Occupancy Percentage": 40.27999999999997
+    },
+    {
+        "Timestamp": "2024-10-29 11:07:47",
+        "Occupancy Percentage": 47.09999999999997
+    },
+    {
+        "Timestamp": "2024-10-29 11:07:57",
+        "Occupancy Percentage": 47.419999999999966
+    },
+    {
+        "Timestamp": "2024-10-29 11:08:08",
+        "Occupancy Percentage": 51.16999999999997
+    },
+    {
+        "Timestamp": "2024-10-29 11:08:18",
+        "Occupancy Percentage": 44.65999999999997
+    },
+    {
+        "Timestamp": "2024-10-29 11:08:28",
+        "Occupancy Percentage": 39.799999999999976
+    },
+    {
+        "Timestamp": "2024-10-29 11:08:38",
+        "Occupancy Percentage": 44.07999999999998
+    },
+    {
+        "Timestamp": "2024-10-29 11:08:48",
+        "Occupancy Percentage": 43.09999999999998
+    },
+    {
+        "Timestamp": "2024-10-29 11:08:59",
+        "Occupancy Percentage": 50.39999999999998
     }
 ]

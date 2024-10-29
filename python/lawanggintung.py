@@ -14,7 +14,7 @@ model = YOLO("models/best2.pt").to("cuda")
 roi_polygon_1 = np.array([ (485, 70), (418, 70), (362, 210), (666, 154)], np.int32)
 
 # Define road dimensions and vehicle sizes
-road_area_m2 = 85
+road_area_m2 = 608
 
 vehicle_sizes = {
     'mobil': {'length': 4.5, 'width': 1.8, 'area': 4.5 * 1.8},

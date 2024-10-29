@@ -82,5 +82,37 @@
     {
         "Timestamp": "2024-10-28 16:59:41",
         "Occupancy Percentage": 50.64705882352941
+    },
+    {
+        "Timestamp": "2024-10-29 17:04:24",
+        "Occupancy Percentage": 50.64705882352941
+    },
+    {
+        "Timestamp": "2024-10-29 17:04:34",
+        "Occupancy Percentage": 62.82352941176471
+    },
+    {
+        "Timestamp": "2024-10-29 17:04:44",
+        "Occupancy Percentage": 49.41176470588236
+    },
+    {
+        "Timestamp": "2024-10-29 10:18:20",
+        "Occupancy Percentage": 50.64705882352941
+    },
+    {
+        "Timestamp": "2024-10-29 10:35:01",
+        "Occupancy Percentage": 43.050000000000004
+    },
+    {
+        "Timestamp": "2024-10-29 10:37:13",
+        "Occupancy Percentage": 9.202302631578947
+    },
+    {
+        "Timestamp": "2024-10-29 10:37:28",
+        "Occupancy Percentage": 7.080592105263158
+    },
+    {
+        "Timestamp": "2024-10-29 10:48:39",
+        "Occupancy Percentage": 7.080592105263158
     }
 ]
